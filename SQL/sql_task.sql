@@ -106,3 +106,29 @@ SELECT name
 FROM [group] 
 WHERE id NOT IN (SELECT groupID FROM [groupMembership])
 AND name LIKE 'TEST-%'
+
+------------ task 3.3 -----------------------
+-- Select user first names and last names for the users that have Victor as a first name 
+-- and are not members of any test groups (they may be members of other groups 
+-- or have no membership in any groups at all).
+
+SELECT firstName, lastName
+FROM [user] 
+WHERE id NOT IN (SELECT userID
+  FROM [group]
+  INNER JOIN [groupMembership]
+  ON [group].id =[groupMembership].groupID
+  WHERE name LIKE 'TEST-%')
+AND firstName IS 'Victor'
+
+------------ task 3.4 -----------------------
+-- Select users and groups for which user was created before 
+-- the group for which he(she) is member of.
+
+SELECT userID, firstName, lastName, groupID, name as groupName
+FROM [groupMembership]
+LEFT JOIN [user]
+ON [user].id = [groupMembership].userID
+LEFT JOIN [group]
+ON [group].id = [groupMembership].groupID
+WHERE [user].created < [group].created 
