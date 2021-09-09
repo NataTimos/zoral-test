@@ -4,13 +4,11 @@
 // d1.daysTo(d2) should return quantity of complete days from d1 to d2. 
 
 // ------------  initial data ------------------
-const d1 = new Date();
-const d2 = new Date(2021, 08, 02); 
+// const d1 = new Date();
+// const d2 = new Date(2021, 08, 02); 
 // ---------------------------------------------
-
-Date.prototype.copy = function () {   
-    return new Date(this.getTime()); 
-};
+const d2 = new Date('2021-09-09T12:00:00'); 
+const d1 = new Date('2021-09-09T12:00:01'); 
 
 Date.prototype.msPERDAY = 1000*60*60*24;
 
@@ -18,9 +16,7 @@ Date.prototype.daysTo = function(d) {
     if (!d) {
         return "No given date";
     }
-    d = d.copy();
-    d.setHours(this.getHours(), this.getMinutes(), this.getSeconds(), this.getMilliseconds()); 
-    var diff = d.getTime() - this.getTime();
+    let diff = Math.abs(d.getTime() - this.getTime());
     return Math.floor((diff)/this.msPERDAY); 
 };  
 
@@ -32,4 +28,4 @@ if (days > 0)
 else if (days < 0) 
     console.log(`${days} days since ${d2.toLocaleDateString()}`); 
 else 
-    console.log("It's today!"); 
+    console.log("0 days"); 
