@@ -15,13 +15,20 @@ let input_arr = [
     {amount: 20000, quantity: 7},
     {amount: 7500, quantity: -42}
 ]
+// let order = "asc"
+let order = "desc"
 // ----------------------------------------------
 
-function countSales(arr) {
+function countSales(arr, order) {
     if (!(arr instanceof Array)) {
-        return "Input data is not Array"
+        return "Input data is not Array\n"
     }
-    inner_arr = arr.slice(0)
+
+    if (order != "asc" && order != "desc") {
+        return "Select sorting order: 'asc' for ascending or 'desc' for descending"
+    }
+
+    let inner_arr = JSON.parse(JSON.stringify(arr))
 
     inner_arr.forEach(element => {
         if (!(element instanceof Object)) {
@@ -36,15 +43,27 @@ function countSales(arr) {
             console.log((`\x1b[31m \n"ERROR: Invalid values in object ${JSON.stringify(element)}, please check"\n \x1b[0m`))
         }
 
-        element.Total = element.amount*element.quantity
+        element.Total = element.amount * element.quantity
     });
     
-    return inner_arr.sort(function(a, b) 
-        {
-            return parseInt(a.Total) - parseInt(b.Total);
-        })
+    if (order == "asc") {
+        return inner_arr.sort(function(a, b) 
+            {   
+                return parseInt(a.Total) - parseInt(b.Total);
+            })
+    }
+    if (order == "desc") {
+        return inner_arr.sort(function(a, b) 
+            {
+                return parseInt(b.Total) - parseInt(a.Total);
+            })
+    }
+    
 }
 
-let output_arr = countSales(input_arr)
+let output_arr = countSales(input_arr, order)
 
-console.log(`\x1b[36m Output_arr sorted by element.Total ascending  = ${JSON.stringify(output_arr, null, 4)} \x1b[0m`)
+console.log(`\x1b[36m Output_arr sorted by element.Total ${order}ending = 
+            ${JSON.stringify(output_arr, null, 4)} \x1b[0m \n`)
+
+// console.log(`${JSON.stringify(input_arr, null, 4)}`)
