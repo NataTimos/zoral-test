@@ -20,19 +20,19 @@ const src = {
 
 const proto = {
     prop11: {
-        prop22: null
+        prop25: null
     }
 };
 
 // for checking
-const result = {
-    prop11: {
-        prop22: {
-            prop31: 31,
-            prop32: 32
-        }
-    }
-}
+// const result = {
+//     prop11: {
+//         prop22: {
+//             prop31: 31,
+//             prop32: 32
+//         }
+//     }
+// }
 // ----------- src, proto - for testing --------------
 // const src = {
 //     prop11: {
@@ -72,36 +72,42 @@ const obj_intersection_func = (a, b) => {
     if (([a, b]).every(isObj)) 
         {   
             for (const [key] of Object.entries(a)) 
-            {
+            {   
                 let a_prop = a[key]
                 let b_prop = b[key]
 
                 if (b_prop === undefined) 
                 {
-                    continue;
+                    break;
                 }
                 if (b_prop == null) {
                     result_obj[key]= a_prop;
                     continue;
                 }
+
                 if (Object.keys(b_prop).length === 0) {
                     result_obj[key] = a_prop
                     continue;
                 }
                 if (
-                    isObj(a_prop) && b_prop !== undefined 
-                    && b_prop != null && Object.keys(b_prop).length !== 0
+                    isObj(a_prop) && b_prop !== undefined &&
+                    b_prop != null && Object.keys(b_prop).length !== 0
                     ) {
                     result_obj[key] = obj_intersection_func(a_prop, b_prop)
-                    let a = result_obj[key]
+                    // new check for empty result
+                    if (JSON.stringify(result_obj[key]).length == 2) {
+                        result_obj[key] = a_prop
+                    } 
                 } 
-                else if  (a_prop==b_prop) {
+                else if (a_prop == b_prop) {
                     result_obj[key] = a_prop
+                    console.log(`result=c(result_obj)}`)
                 }
             }
         }
     return result_obj
 }
+
 let res = obj_intersection_func(src, proto)
 
 console.log(`\x1b[36m \n Result_obj = ${JSON.stringify(res, null, 4)} \x1b[0m \n`)
